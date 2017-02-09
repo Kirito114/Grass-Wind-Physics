@@ -21,8 +21,8 @@ GLuint color;
 const unsigned int GRASS_AMOUNT = 10000;
 const unsigned int GRASS_PRECISION = 8;
 //Wind information
-point3 wind_position(25.0f,4.0f,0.0f);
-point3 wind_vector(1.0f,-0.1f,1.0f);
+point3 wind_position(25.0f,5.0f,0.0f);
+point3 wind_vector(-2.0f,-0.2f,0.0f);
 
 static void renderScene()
 {
@@ -33,15 +33,14 @@ static void renderScene()
     glRotatef(angle_y,0,1,0);
 
     glEnableClientState(GL_VERTEX_ARRAY);
-    glColor3f(1.0f,1.0f,1.0f);
-    //Pas bien mais pour une croix
-    glBegin(GL_LINES);
-        glVertex3f(wind_position.x-1,wind_position.y,wind_position.z);
-        glVertex3f(wind_position.x+1,wind_position.y,wind_position.z);
+    //Pas bien mais pour une fleche
+    glBegin(GL_TRIANGLES);
+        glColor3f(0.0f,0.0f,1.0f);
         glVertex3f(wind_position.x,wind_position.y-1,wind_position.z);
+        glColor3f(0.0f,0.0f,1.0f);
         glVertex3f(wind_position.x,wind_position.y+1,wind_position.z);
-        glVertex3f(wind_position.x,wind_position.y,wind_position.z-1);
-        glVertex3f(wind_position.x,wind_position.y,wind_position.z+1);
+        glColor3f(1.0f,0.0f,0.0f);
+        glVertex3f(wind_position.x+wind_vector.x,wind_position.y+wind_vector.y,wind_position.z+wind_vector.z);
     glEnd();
     glBindBuffer(GL_ARRAY_BUFFER,VBO1);
     glVertexPointer(3,GL_FLOAT,0,0);

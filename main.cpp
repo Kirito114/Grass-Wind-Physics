@@ -114,9 +114,18 @@ void mouseMotionManager(int x,int y)
     glutPostRedisplay();
 }
 
+void timer(int value)
+{
+    glutPostRedisplay();
+    //Bridage à 60 FPS 1000/16.66=60
+    glutTimerFunc(16.66,timer,0);
+}
+
 static void InitializeGlutCallbacks()
 {
     glutDisplayFunc(renderScene);
+    //Bridage à 60 FPS 1000/16.66=60
+    glutTimerFunc(16.66,timer,0);
     glutIdleFunc(standbyFunc);
     glutKeyboardFunc(keyboardManager);
     glutSpecialFunc(specialKeyboardManager);

@@ -18,11 +18,13 @@ GLuint Grass;
 GLuint color;
 
 //Grass information
-const unsigned int GRASS_AMOUNT = 10000;
+const unsigned int GRASS_AMOUNT = 15000;
 const unsigned int GRASS_PRECISION = 8;
 //Wind information
 point3 wind_position(25.0f,5.0f,0.0f);
 point3 wind_vector(-2.0f,-0.2f,0.0f);
+
+std::deque<BezierCurve> grass_blades;
 
 static void renderScene()
 {
@@ -42,6 +44,7 @@ static void renderScene()
         glColor3f(1.0f,0.0f,0.0f);
         glVertex3f(wind_position.x+wind_vector.x,wind_position.y+wind_vector.y,wind_position.z+wind_vector.z);
     glEnd();
+
     glBindBuffer(GL_ARRAY_BUFFER,VBO1);
     glVertexPointer(3,GL_FLOAT,0,0);
     glColor3f(0.37f,0.3f,0.14f);
@@ -66,7 +69,16 @@ static void renderScene()
 
 void standbyFunc()
 {
+    /*
+    point3 * grass_vertice = new point3[GRASS_AMOUNT*GRASS_PRECISION];
     //On change la force du vent
+    for(std::deque<BezierCurve>::const_iterator it = grass_blades.begin();it != grass_blades.end();it++)
+    {
+        it->controlPoints.at(3)*1.1;
+    }
+    glBindBuffer(GL_ARRAY_BUFFER,Grass);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(float)*3*GRASS_AMOUNT*GRASS_PRECISION,grass_vertice,GL_STATIC_DRAW);
+    */
 }
 
 void ReshapeWindowManager(GLsizei width,GLsizei height)
@@ -137,7 +149,7 @@ static void InitializeGL()
 {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LINE_SMOOTH); //Antialiasing
-    glClearColor(0.0f,0.0f,0.0f,1.0f);
+    glClearColor(0.52f,0.80f,0.98f,1.0f);
 }
 
 static void InitializeGeometry()
@@ -175,6 +187,7 @@ static void InitializeGeometry()
         controlPoints.push_back(point3(grass_x+coef_deformation_x*0.5,grass_y*(2/3.0),grass_z+coef_deformation_z*0.5));
         controlPoints.push_back(point3(grass_x+coef_deformation_x,grass_y,grass_z+coef_deformation_z));
         BezierCurve grass_rode(controlPoints);
+        grass_blades.push_back(grass_rode);
         grass_rode.getPoints(GRASS_PRECISION,&grass_vertice[i*GRASS_PRECISION]);
     }
 

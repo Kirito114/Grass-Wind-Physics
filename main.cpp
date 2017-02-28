@@ -6,6 +6,8 @@
 #include <random>
 
 #include "BezierCurve.hpp"
+#include "Shader.hpp"
+#include "FreeImage.h"
 
 float windowWidth = 720;
 float windowHeight = 480;
@@ -45,10 +47,13 @@ static void renderScene()
         glVertex3f(wind_position.x+wind_vector.x,wind_position.y+wind_vector.y,wind_position.z+wind_vector.z);
     glEnd();
 
+    //Draws the soil
     glBindBuffer(GL_ARRAY_BUFFER,VBO1);
     glVertexPointer(3,GL_FLOAT,0,0);
     glColor3f(0.37f,0.3f,0.14f);
     glDrawArrays(GL_QUADS,0,4);
+
+    //Draws the grass blades
     glBindBuffer(GL_ARRAY_BUFFER,Grass);
     glVertexPointer(3,GL_FLOAT,0,0);
     glEnableClientState(GL_COLOR_ARRAY);
